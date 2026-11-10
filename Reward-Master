@@ -20,6 +20,8 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.1);
+            --bkash: #e2136e;
+            --nagad: #f15a24;
         }
 
         * {
@@ -526,8 +528,8 @@
             <!-- ====== TAB 2: DYNAMIC TASKS ====== -->
             <div id="tab-tasks" class="page">
                 <div class="card">
-                    <h3 style="font-size: 1.1rem; margin-bottom: 5px;">ডেইলি টাস্ক লিস্ট (৫টি টাস্ক)</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">আপনার প্ল্যান অনুযায়ী প্রতিদিন ৫টি টাস্ক কমপ্লিট করতে পারবেন।</p>
+                    <h3 id="task-list-title" style="font-size: 1.1rem; margin-bottom: 5px;">ডেইলি টাস্ক লিস্ট</h3>
+                    <p id="task-list-desc" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">আপনার প্ল্যান অনুযায়ী টাস্ক কমপ্লিট করুন।</p>
                     
                     <div id="dynamic-task-container">
                         <!-- Dynamic content via updateTaskUI -->
@@ -554,21 +556,29 @@
 
                     <!-- Deposit Form -->
                     <div id="deposit-section">
-                        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid var(--accent); border-radius: 8px; padding: 10px; font-size: 0.85rem; margin-bottom: 14px;">
-                            <strong>বিকাশ/নগদ Personal:</strong> 01912074375 <br>
-                            টাকা সেন্ড মানি করে Transaction ID দিন।
+                        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid var(--accent); border-radius: 10px; padding: 12px; font-size: 0.85rem; margin-bottom: 14px;">
+                            <div style="margin-bottom: 6px; font-weight: 600; color: var(--accent);">পেমেন্ট করার নিয়ম:</div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                <span style="background: var(--bkash); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;"><i class="fa-solid fa-wallet"></i> বিকাশ (Personal):</span> 
+                                <strong style="color: #fff; letter-spacing: 0.5px;">01317736548</strong>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="background: var(--nagad); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;"><i class="fa-solid fa-wallet"></i> নগদ (Personal):</span> 
+                                <strong style="color: #fff; letter-spacing: 0.5px;">01333803069</strong>
+                            </div>
+                            <div style="margin-top: 8px; font-size: 0.78rem; color: var(--text-muted);">উক্ত নম্বরে সেন্ড মানি করে নিচের বক্সে Transaction ID দিন।</div>
                         </div>
                         <form onsubmit="handleDeposit(event)">
                             <div class="form-group">
                                 <label>পেমেন্ট মেথড</label>
                                 <select id="dep-method" class="form-control" required>
-                                    <option value="Bkash">Bkash</option>
-                                    <option value="Nagad">Nagad</option>
+                                    <option value="Bkash">💙 বিকাশ (Bkash - 01317736548)</option>
+                                    <option value="Nagad">🧡 নগদ (Nagad - 01333803069)</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>টাকার পরিমাণ (৳)</label>
-                                <input type="number" id="dep-amount" class="form-control" placeholder="কমপক্ষে ৩০০ টাকা" min="300" required>
+                                <input type="number" id="dep-amount" class="form-control" placeholder="কমপক্ষে ৬০ টাকা" min="60" required>
                             </div>
                             <div class="form-group">
                                 <label>Transaction ID (TrxID)</label>
@@ -580,15 +590,15 @@
 
                     <!-- Withdraw Form -->
                     <div id="withdraw-section" style="display: none;">
-                        <div style="background: rgba(99, 102, 241, 0.1); border: 1px solid var(--primary); border-radius: 8px; padding: 10px; font-size: 0.8rem; margin-bottom: 14px; color: var(--text-muted);">
-                            ℹ️ প্রথম উইথড্র সর্বনিম্ন <strong>৩০০ টাকা</strong>। পরবর্তী প্রতি উইথড্রর জন্য ন্যূনতম <strong>১টি রেফার</strong> থাকতে হবে এবং সর্বনিম্ন <strong>১০০০ টাকা</strong> হতে হবে।
+                        <div id="withdraw-notice" style="background: rgba(99, 102, 241, 0.1); border: 1px solid var(--primary); border-radius: 8px; padding: 10px; font-size: 0.8rem; margin-bottom: 14px; color: var(--text-muted);">
+                            <!-- Dynamic Withdraw Notice -->
                         </div>
                         <form onsubmit="handleWithdraw(event)">
                             <div class="form-group">
                                 <label>উইথড্র মাধ্যম</label>
                                 <select id="wth-method" class="form-control" required>
-                                    <option value="Bkash">Bkash</option>
-                                    <option value="Nagad">Nagad</option>
+                                    <option value="Bkash">💙 বিকাশ (Bkash)</option>
+                                    <option value="Nagad">🧡 নগদ (Nagad)</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -700,19 +710,18 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // ৫০০০ থেকে ৮০০০ টাকার প্ল্যানগুলোর দৈনিক আয় আপনার নির্দেশমতো আপডেট করা হয়েছে
+    // প্রতিটি প্ল্যানের নির্দিষ্ট টাস্ক সংখ্যা (taskCount) এবং অন্যান্য তথ্য
     const allPlansData = [
-        { name: 'ব্রোঞ্জ প্ল্যান', price: 600, income: 60, badge: 'লেভেল ১', badgeColor: 'var(--primary)', borderColor: 'var(--border)' },
-        { name: 'আয়রন প্ল্যান', price: 1000, income: 100, badge: 'লেভেল ২', badgeColor: 'var(--primary)', borderColor: 'var(--border)' },
-        { name: 'সিলভার প্ল্যান', price: 1500, income: 160, badge: 'লেভেল ৩', badgeColor: 'var(--secondary)', borderColor: 'var(--border)' },
-        { name: 'প্লাটিনাম প্ল্যান', price: 2000, income: 220, badge: 'লেভেল ৪', badgeColor: 'var(--secondary)', borderColor: 'var(--border)' },
-        { name: 'গোল্ড প্ল্যান', price: 3000, income: 340, badge: 'জনপ্রিয়', badgeColor: 'var(--accent)', borderColor: 'var(--accent)' },
-        { name: 'টিটানিয়াম প্ল্যান', price: 4500, income: 520, badge: 'স্পেশাল', badgeColor: 'var(--accent)', borderColor: 'var(--accent)' },
-        { name: 'রুবি প্ল্যান', price: 5000, income: 1000, badge: 'ভিআইপি ১', badgeColor: '#ec4899', borderColor: '#ec4899' },
-        { name: 'স্যাফায়ার প্ল্যান', price: 5500, income: 1200, badge: 'ভিআইপি ২', badgeColor: '#ec4899', borderColor: '#ec4899' },
-        { name: 'মাস্টার প্ল্যান', price: 6000, income: 1500, badge: 'ভিআইপি ৩', badgeColor: '#ec4899', borderColor: '#ec4899' },
-        { name: 'সুপার মাস্টার প্ল্যান', price: 7000, income: 2000, badge: 'মেগা ভিআইপি', badgeColor: '#ec4899', borderColor: '#ec4899' },
-        { name: 'ডায়মন্ড প্ল্যান', price: 8000, income: 25000, badge: 'আল্টিমেট ভিআইপি', badgeColor: '#ec4899', borderColor: '#ec4899' }
+        { name: 'স্টার্টার প্ল্যান', price: 60, totalIncome: 80, days: 10, taskCount: 3, badge: 'শুরু', badgeColor: 'var(--primary)', borderColor: 'var(--border)' },
+        { name: 'ব্রোঞ্জ প্ল্যান', price: 100, totalIncome: 150, days: 12, taskCount: 4, badge: 'লেভেল ১', badgeColor: 'var(--primary)', borderColor: 'var(--border)' },
+        { name: 'সিলভার প্ল্যান', price: 200, totalIncome: 280, days: 15, taskCount: 5, badge: 'লেভেল ২', badgeColor: 'var(--secondary)', borderColor: 'var(--border)' },
+        { name: 'গোল্ড প্ল্যান', price: 300, totalIncome: 450, days: 15, taskCount: 6, badge: 'জনপ্রিয়', badgeColor: 'var(--accent)', borderColor: 'var(--accent)' },
+        { name: 'প্লাটিনাম প্ল্যান', price: 400, totalIncome: 650, days: 20, taskCount: 8, badge: 'লেভেল ৩', badgeColor: 'var(--secondary)', borderColor: 'var(--border)' },
+        { name: 'ভিআইপি প্ল্যান', price: 500, totalIncome: 800, days: 20, taskCount: 10, badge: 'স্পেশাল', badgeColor: 'var(--accent)', borderColor: 'var(--accent)' },
+        { name: 'মাস্টার প্ল্যান', price: 600, totalIncome: 1000, days: 25, taskCount: 10, badge: 'ভিআইপি ১', badgeColor: '#ec4899', borderColor: '#ec4899' },
+        { name: 'রয়্যাল প্ল্যান', price: 800, totalIncome: 1900, days: 30, taskCount: 12, badge: 'ভিআইপি ২', badgeColor: '#ec4899', borderColor: '#ec4899' },
+        { name: 'সুপার ভিআইপি প্ল্যান', price: 900, totalIncome: 2200, days: 30, taskCount: 15, badge: 'ভিআইপি ৩', badgeColor: '#ec4899', borderColor: '#ec4899' },
+        { name: 'মেগা ডায়মন্ড প্ল্যান', price: 1000, totalIncome: 2500, days: 30, taskCount: 20, badge: 'আল্টিমেট', badgeColor: '#ec4899', borderColor: '#ec4899' }
     ];
 
     window.getTodayString = function() {
@@ -729,6 +738,7 @@
         todayEarn: 0.00,
         plan: null,          
         planDailyIncome: 0,
+        planTaskCount: 5, // ডিফল্ট টাস্ক সংখ্যা
         hasPurchasedPlan: false, 
         referCount: 0,
         totalWithdrawCount: 0,
@@ -829,6 +839,7 @@
                 todayEarn: 0.00,
                 plan: null,
                 planDailyIncome: 0,
+                planTaskCount: 5,
                 hasPurchasedPlan: false,
                 referCount: 0,
                 totalWithdrawCount: 0,
@@ -897,6 +908,14 @@
         document.getElementById('ref-link-text').innerText = `https://rewardapp.com/ref?code=${userData.phone ? userData.phone.slice(-4) : 'USER'}`;
         document.getElementById('ref-count').innerText = `${userData.referCount || 0} জন`;
 
+        // Update Withdraw Notice dynamically based on withdrawal count
+        const noticeDiv = document.getElementById('withdraw-notice');
+        if (userData.totalWithdrawCount === 0) {
+            noticeDiv.innerHTML = `ℹ️ প্রথম উইথড্র সর্বনিম্ন <strong>৩০ টাকা</strong>।`;
+        } else {
+            noticeDiv.innerHTML = `ℹ️ পরবর্তী প্রতি উইথড্রর জন্য ন্যূনতম <strong>১টি রেফার</strong> থাকতে হবে এবং সর্বনিম্ন <strong>১০০ টাকা</strong> হতে হবে।`;
+        }
+
         updateTaskUI();
         updatePlansUI();
     }
@@ -910,11 +929,14 @@
             const isCurrentActive = userData.plan === p.name;
             let btnHtml = '';
 
+            const dailyInc = p.totalIncome / p.days;
+
             if (isCurrentActive) {
-                btnHtml = `<button class="submit-btn" style="background: #334155; color: var(--text-muted); cursor: not-allowed;" disabled>ক্রয় করা হয়েছে (সক্রিয়)</button>`;
+                // বর্তমান সক্রিয় প্ল্যান হলে দেখাবে
+                btnHtml = `<button class="submit-btn" style="background: #334155; color: var(--secondary); cursor: not-allowed; border: 1px solid var(--secondary);" disabled><i class="fa-solid fa-check-circle"></i> চলমান প্ল্যান (সক্রিয়)</button>`;
             } else {
                 let btnBg = p.badgeColor === 'var(--primary)' ? 'var(--primary)' : (p.badgeColor === 'var(--secondary)' ? 'var(--secondary)' : (p.badgeColor === 'var(--accent)' ? 'var(--accent)' : '#ec4899'));
-                btnHtml = `<button class="submit-btn" style="background: ${btnBg};" onclick="buyPlan('${p.name}', ${p.price}, ${p.income})">প্ল্যানটি কিনুন</button>`;
+                btnHtml = `<button class="submit-btn" style="background: ${btnBg};" onclick="buyPlan('${p.name}', ${p.price}, ${dailyInc}, ${p.taskCount})">প্ল্যানটি কিনুন</button>`;
             }
 
             html += `
@@ -923,8 +945,9 @@
                     <h3>${p.name}</h3>
                     <p style="font-size: 1.2rem; font-weight: 700; color: ${p.badgeColor}; margin: 6px 0;">৳ ${p.price.toLocaleString('en-IN')}</p>
                     <ul style="font-size: 0.85rem; color: var(--text-muted); list-style: none; line-height: 1.8;">
-                        <li><i class="fa-solid fa-check" style="color: var(--secondary);"></i> দৈনিক আয়: ৳ ${p.income.toLocaleString('en-IN')}</li>
-                        <li><i class="fa-solid fa-check" style="color: var(--secondary);"></i> মেয়াদ: ১৫ দিন</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--secondary);"></i> মোট আয়: ৳ ${p.totalIncome.toLocaleString('en-IN')}</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--secondary);"></i> মেয়াদ: ${p.days} দিন</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--secondary);"></i> দৈনিক টাস্ক: ${p.taskCount} টি</li>
                     </ul>
                     ${btnHtml}
                 </div>
@@ -935,6 +958,8 @@
 
     window.updateTaskUI = function() {
         const container = document.getElementById('dynamic-task-container');
+        const taskTitle = document.getElementById('task-list-title');
+        const taskDesc = document.getElementById('task-list-desc');
         const today = getTodayString();
         
         if (userData.lastTaskDate !== today) {
@@ -945,6 +970,8 @@
         }
 
         if(!userData.plan) {
+            taskTitle.innerText = "ডেইলি টাস্ক লিস্ট";
+            taskDesc.innerText = "আপনার প্ল্যান অনুযায়ী টাস্ক কমপ্লিট করুন।";
             container.innerHTML = `
                 <div style="text-align: center; padding: 30px; color: var(--text-muted);">
                     <i class="fa-solid fa-lock" style="font-size: 2.2rem; margin-bottom: 10px; color: var(--accent);"></i>
@@ -954,10 +981,14 @@
             return;
         }
 
-        const singleTaskReward = userData.planDailyIncome / 5;
+        const totalTasks = userData.planTaskCount || 5;
+        taskTitle.innerText = `${userData.plan} (${totalTasks}টি টাস্ক)`;
+        taskDesc.innerText = `আপনার বর্তমান প্ল্যান অনুযায়ী প্রতিদিন ${totalTasks}টি টাস্ক কমপ্লিট করতে পারবেন।`;
+
+        const singleTaskReward = userData.planDailyIncome / totalTasks;
         let htmlContent = '';
 
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= totalTasks; i++) {
             const isClaimed = userData.completedTasks && userData.completedTasks.includes(i);
 
             if (isClaimed) {
@@ -1020,7 +1051,8 @@
         }, 1000);
     }
 
-    window.buyPlan = async function(planName, price, dailyIncome) {
+    // নতুন প্ল্যান কেনার ফাংশন যেখানে আগের প্ল্যান অটো আনঅ্যাক্টিভ ও টাস্ক রিসেট হবে
+    window.buyPlan = async function(planName, price, dailyIncome, taskCount) {
         if (userData.plan === planName) {
             showToast("আপনি ইতিমধ্যে এই প্ল্যানটি কিনেছেন!", false);
             return;
@@ -1030,18 +1062,20 @@
             showToast("পর্যাপ্ত ব্যালেন্স নেই! দয়া করে ডিপোজিট করুন।", false);
             return;
         }
+
         userData.balance -= price;
-        userData.plan = planName;
+        userData.plan = planName;                    // নতুন প্ল্যান সেট হলো (আগেরটি ওভাররাইট হয়ে গেল)
         userData.planDailyIncome = dailyIncome;
+        userData.planTaskCount = taskCount;          // নতুন প্ল্যানের টাস্ক সংখ্যা সেট হলো
         userData.hasPurchasedPlan = true; 
         userData.referCount = (userData.referCount || 0) + 1; 
-        userData.completedTasks = []; 
+        userData.completedTasks = [];                // নতুন প্ল্যানের জন্য টাস্ক লিস্ট রিসেট
         userData.lastTaskDate = getTodayString();
         
         await saveUserData(); 
         updateUI();           
         
-        showToast(`${planName} সক্রিয় হয়েছে!`);
+        showToast(`${planName} সফলভাবে সক্রিয় হয়েছে! আগের প্ল্যান নিষ্ক্রিয় করা হয়েছে।`);
         switchTab('home');    
     }
 
@@ -1131,7 +1165,7 @@
         const method = document.getElementById('wth-method').value;
         const acc = document.getElementById('wth-acc').value;
 
-        let minWithdraw = (userData.totalWithdrawCount === 0) ? 300 : 1000;
+        let minWithdraw = (userData.totalWithdrawCount === 0) ? 30 : 100;
 
         if (userData.totalWithdrawCount > 0 && userData.referCount < 1) {
             showToast("পরবর্তী উইথড্র করতে হলে কমপক্ষে ১টি রেফার থাকতে হবে!", false);
@@ -1140,9 +1174,9 @@
 
         if (amount < minWithdraw) {
             if(userData.totalWithdrawCount === 0) {
-                showToast("প্রথম উইথড্র সর্বনিম্ন ৩০০ টাকা হতে হবে!", false);
+                showToast("প্রথম উইথড্র সর্বনিম্ন ৩০ টাকা হতে হবে!", false);
             } else {
-                showToast("উইথড্র করতে সর্বনিম্ন ১০০০ টাকা হতে হবে এবং ১টি রেফার লাগবে!", false);
+                showToast("উইথড্র করতে সর্বনিম্ন ১০০ টাকা হতে হবে এবং ১টি রেফার লাগবে!", false);
             }
             return;
         }
